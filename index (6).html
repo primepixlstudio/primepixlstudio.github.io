@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PrimePixl Studio — Reel Editing That Actually Grows Your Brand</title>
+<meta name="description" content="We engineer high-retention reels for Instagram creators, influencers and businesses. Trial edit ₹199. 48hr delivery. Bangalore, India.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ─────────────────────────────────────────
+   RESET
+───────────────────────────────────────── */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:#0a0c14;color:#e4e6f0;font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.65;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+
+/* ─────────────────────────────────────────
+   VARIABLES
+───────────────────────────────────────── */
+:root{
+  --bg:#0a0c14;--bg2:#0d1020;--bg3:#111526;
+  --surface:rgba(255,255,255,.04);--border:rgba(255,255,255,.07);
+  --violet:#7c3aed;--pink:#ec4899;--blue:#3b82f6;--green:#22c55e;--amber:#f59e0b;
+  --text:#e4e6f0;--muted:rgba(228,230,240,.48);--muted2:rgba(228,230,240,.28);
+  --r:10px;--r-lg:18px;--r-xl:26px;--tr:.25s ease;
+}
+
+/* ─────────────────────────────────────────
+   GRAIN OVERLAY
+───────────────────────────────────────── */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.025'/%3E%3C/svg%3E");opacity:.5}
+
+/* ─────────────────────────────────────────
+   AMBIENT ORBS
+───────────────────────────────────────── */
+.ambient{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.ao{position:absolute;border-radius:50%;filter:blur(130px);animation:orbFloat ease-in-out infinite}
+.ao1{width:700px;height:700px;background:rgba(124,58,237,.15);top:-200px;left:-150px;animation-duration:14s}
+.ao2{width:550px;height:550px;background:rgba(236,72,153,.1);bottom:-150px;right:-120px;animation-duration:17s;animation-delay:-6s}
+.ao3{width:450px;height:450px;background:rgba(59,130,246,.08);top:40%;left:45%;animation-duration:11s;animation-delay:-4s}
+@keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(28px,-28px) scale(1.04)}}
+
+/* ─────────────────────────────────────────
+   PARTICLES
+───────────────────────────────────────── */
+#particles{position:fixed;inset:0;pointer-events:none;z-index:0}
+.pt{position:absolute;border-radius:50%;animation:ptRise linear infinite;opacity:0}
+@keyframes ptRise{0%{opacity:0;transform:translateY(0)}15%{opacity:.7}85%{opacity:.25}100%{opacity:0;transform:translateY(-400px)}}
+
+/* ─────────────────────────────────────────
+   TYPOGRAPHY
+───────────────────────────────────────── */
+.display{font-family:'Bebas Neue',sans-serif;letter-spacing:.015em;line-height:.92}
+.grad{background:linear-gradient(135deg,#a78bfa,#ec4899,#fb923c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.grad-green{background:linear-gradient(135deg,#22c55e,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.grad-cool{background:linear-gradient(135deg,#a78bfa,#3b82f6,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.label-tag{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase}
+
+/* ─────────────────────────────────────────
+   LAYOUT
+───────────────────────────────────────── */
+.container{max-width:1120px;margin:0 auto;padding:0 20px}
+.section{padding:90px 0;position:relative;z-index:1}
+.section-alt{background:var(--bg2)}
+.sec-header{text-align:center;margin-bottom:56px}
+.sec-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.22);border-radius:100px;padding:5px 14px;margin-bottom:14px}
+.sec-badge-dot{width:6px;height:6px;border-radius:50%;background:#7c3aed;animation:badgePulse 2s infinite;flex-shrink:0}
+@keyframes badgePulse{0%,100%{box-shadow:0 0 0 0 rgba(124,58,237,.6)}70%{box-shadow:0 0 0 7px transparent}}
+.sec-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(28px,4vw,48px);line-height:1.1;letter-spacing:-.02em;margin-bottom:14px}
+.sec-sub{font-size:16px;color:var(--muted);max-width:540px;margin:0 auto;font-weight:300;line-height:1.8}
+
+/* ─────────────────────────────────────────
+   BUTTONS
+───────────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 28px;border-radius:var(--r);font-family:'Syne',sans-serif;font-weight:700;font-size:13px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;border:none;transition:all var(--tr);position:relative;overflow:hidden;white-space:nowrap}
+.btn::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,.08);opacity:0;transition:opacity var(--tr)}
+.btn:hover::after{opacity:1}
+.btn-violet{background:linear-gradient(135deg,#7c3aed,#9d5cff);color:#fff;box-shadow:0 4px 24px rgba(124,58,237,.45)}
+.btn-violet:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(124,58,237,.65)}
+.btn-wa{background:linear-gradient(135deg,#16a34a,#22c55e);color:#fff;box-shadow:0 4px 24px rgba(34,197,94,.4)}
+.btn-wa:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(34,197,94,.6)}
+.btn-ghost{background:rgba(255,255,255,.05);color:var(--text);border:1.5px solid rgba(255,255,255,.12)}
+.btn-ghost:hover{border-color:rgba(124,58,237,.5);background:rgba(124,58,237,.08);color:#fff}
+.btn-lg{font-size:15px;padding:16px 34px}
+.btn-xl{font-size:16px;padding:19px 42px}
+
+/* ─────────────────────────────────────────
+   HEADER
+───────────────────────────────────────── */
+#hdr{position:fixed;top:0;left:0;right:0;z-index:500;background:rgba(10,12,20,.88);backdrop-filter:blur(22px);border-bottom:1px solid rgba(255,255,255,.055);transition:background var(--tr),box-shadow var(--tr)}
+#hdr.scrolled{background:rgba(10,12,20,.97);box-shadow:0 4px 28px rgba(0,0,0,.45)}
+.hdr-wrap{max-width:1120px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.06em;background:linear-gradient(135deg,#a78bfa,#ec4899,#fb923c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{font-family:'Syne',sans-serif;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);transition:color var(--tr)}
+.nav-links a:hover{color:#fff}
+.hbg{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+.hbg span{width:22px;height:2px;background:#e4e6f0;border-radius:2px;display:block;transition:all .3s}
+.mmenu{position:fixed;top:64px;left:0;right:0;z-index:490;background:rgba(10,12,20,.98);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:20px 20px 28px;display:none;flex-direction:column}
+.mmenu.open{display:flex}
+.mmenu a{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:13px 0;border-bottom:1px solid var(--border);transition:color var(--tr)}
+.mmenu a:hover{color:#fff}
+.mmenu .btn{margin-top:16px;justify-content:center}
+
+/* ─────────────────────────────────────────
+   HERO
+───────────────────────────────────────── */
+.hero{min-height:100vh;display:flex;align-items:center;padding:120px 0 72px;position:relative;z-index:1;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);border-radius:100px;padding:6px 16px;margin-bottom:20px}
+.badge-dot{width:7px;height:7px;border-radius:50%;background:#7c3aed;animation:badgePulse 2s infinite;flex-shrink:0}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,5.5vw,72px);line-height:.9;letter-spacing:.01em;margin-bottom:18px}
+.hero-sub{font-size:17px;color:var(--muted);line-height:1.8;max-width:490px;margin-bottom:32px;font-weight:300}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:36px}
+.hero-stats{display:flex;gap:24px;flex-wrap:wrap}
+.hs-num{font-family:'Bebas Neue',sans-serif;font-size:36px;line-height:1;color:#fff}
+.hs-lbl{font-size:12px;color:var(--muted);margin-top:2px}
+
+/* ─── HERO RIGHT — CSS-ONLY 3D VISUAL ─── */
+.hero-right{position:relative;height:440px;display:flex;align-items:center;justify-content:center}
+/* Orbiting rings */
+.hr-scene{position:relative;width:280px;height:280px}
+.ring{position:absolute;border-radius:50%;border-style:solid;animation:spin linear infinite;top:50%;left:50%;transform-origin:center center}
+.ring1{width:260px;height:260px;margin:-130px 0 0 -130px;border-width:1.5px;border-color:rgba(124,58,237,.35) transparent rgba(124,58,237,.35) transparent;animation-duration:8s}
+.ring2{width:210px;height:210px;margin:-105px 0 0 -105px;border-width:1px;border-color:rgba(236,72,153,.3) transparent rgba(236,72,153,.3) transparent;animation-duration:12s;animation-direction:reverse}
+.ring3{width:160px;height:160px;margin:-80px 0 0 -80px;border-width:1px;border-color:rgba(59,130,246,.25) transparent rgba(59,130,246,.25) transparent;animation-duration:6s}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+/* Center play button */
+.hr-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,rgba(124,58,237,.3),rgba(236,72,153,.2));border:1.5px solid rgba(124,58,237,.5);display:flex;align-items:center;justify-content:center;animation:playGlow 3s ease-in-out infinite;cursor:default}
+.hr-play:hover{transform:translate(-50%,-50%) scale(1.08);transition:transform .3s}
+@keyframes playGlow{0%,100%{box-shadow:0 0 0 0 rgba(124,58,237,.4),0 0 30px rgba(124,58,237,.15)}50%{box-shadow:0 0 0 14px transparent,0 0 50px rgba(124,58,237,.25)}}
+.hr-tri{width:0;height:0;border-style:solid;border-width:12px 0 12px 20px;border-color:transparent transparent transparent #fff;margin-left:4px;filter:drop-shadow(0 0 8px rgba(167,139,250,.9))}
+/* Floating gems */
+.gem{position:absolute;border-radius:var(--r);animation:gemFloat ease-in-out infinite}
+.gem1{width:48px;height:48px;top:10%;right:8%;background:linear-gradient(135deg,rgba(124,58,237,.4),rgba(167,139,250,.2));border:1px solid rgba(124,58,237,.4);animation-duration:4s;border-radius:10px;transform:rotate(15deg)}
+.gem2{width:36px;height:36px;bottom:12%;left:6%;background:linear-gradient(135deg,rgba(236,72,153,.35),rgba(251,146,60,.2));border:1px solid rgba(236,72,153,.4);animation-duration:5s;animation-delay:-1.5s;border-radius:8px;transform:rotate(-20deg)}
+.gem3{width:28px;height:28px;top:22%;left:4%;background:linear-gradient(135deg,rgba(59,130,246,.35),rgba(6,182,212,.2));border:1px solid rgba(59,130,246,.4);animation-duration:3.5s;animation-delay:-.8s;border-radius:7px;transform:rotate(30deg)}
+.gem4{width:22px;height:22px;bottom:25%;right:4%;background:linear-gradient(135deg,rgba(34,197,94,.3),rgba(6,182,212,.2));border:1px solid rgba(34,197,94,.35);animation-duration:4.5s;animation-delay:-2s;border-radius:6px;transform:rotate(-10deg)}
+@keyframes gemFloat{0%,100%{transform:translateY(0) rotate(15deg)}50%{transform:translateY(-10px) rotate(18deg)}}
+/* HUD cards */
+.hud{position:absolute;background:rgba(8,10,18,.82);border:1px solid;border-radius:12px;padding:10px 13px;backdrop-filter:blur(18px);animation:hudFloat ease-in-out infinite}
+.hud-tl{top:6%;left:0%;border-color:rgba(124,58,237,.3);width:190px;animation-duration:4s}
+.hud-pf{bottom:14%;right:0%;border-color:rgba(56,189,248,.25);width:142px;animation-duration:5s;animation-delay:-2s}
+.hud-ex{bottom:4%;left:2%;border-color:rgba(34,197,94,.25);animation-duration:4.5s;animation-delay:-1s}
+@keyframes hudFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.hud-lbl{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(167,139,250,.6);margin-bottom:6px}
+.tl-row{height:4px;background:rgba(255,255,255,.06);border-radius:2px;margin-bottom:4px;overflow:hidden;position:relative}
+.tl-fill{position:absolute;left:0;top:0;height:100%;border-radius:2px;animation:tlPulse 3s ease-in-out infinite}
+@keyframes tlPulse{0%,100%{opacity:.6}50%{opacity:1}}
+.tf1{width:66%;background:linear-gradient(90deg,#7c3aed,#a78bfa)}
+.tf2{width:44%;background:linear-gradient(90deg,#ec4899,#f472b6);animation-delay:.3s}
+.tf3{width:80%;background:linear-gradient(90deg,#3b82f6,#06b6d4);animation-delay:.6s}
+.tf4{width:38%;background:linear-gradient(90deg,#22c55e,#06b6d4);animation-delay:.9s}
+.tl-ph{position:absolute;top:-2px;width:2px;height:calc(100% + 4px);background:#a78bfa;box-shadow:0 0 8px #a78bfa;animation:phMove 4s ease-in-out infinite}
+@keyframes phMove{0%,100%{left:60%}50%{left:74%}}
+.pf-row{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+.pf-row:last-child{margin-bottom:0}
+.pf-lbl{font-size:9px;color:rgba(255,255,255,.35);width:44px;flex-shrink:0}
+.pf-track{flex:1;height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
+.pf-fill{height:100%;border-radius:2px;animation:tlPulse 2.5s ease-in-out infinite}
+.pf-val{font-family:'Bebas Neue',sans-serif;font-size:13px;color:#f0f2f7;min-width:22px;text-align:right}
+.ex-row{display:flex;align-items:center;gap:8px}
+.ex-ico{width:26px;height:26px;border-radius:6px;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.25);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.ex-name{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:#f0f2f7;line-height:1.3}
+.ex-sub{font-size:9px;color:rgba(255,255,255,.35)}
+.ex-bar{margin-top:6px;height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
+.ex-fill{height:100%;background:linear-gradient(90deg,#22c55e,#06b6d4);animation:exFill 3s ease-in-out infinite}
+@keyframes exFill{0%{width:0}65%{width:100%}100%{width:100%}}
+/* Glow spots */
+.vg{position:absolute;border-radius:50%;filter:blur(45px);pointer-events:none;animation:glowP ease-in-out infinite}
+.vg1{width:180px;height:180px;background:rgba(124,58,237,.15);top:6%;right:10%;animation-duration:6s}
+.vg2{width:140px;height:140px;background:rgba(236,72,153,.1);bottom:10%;left:12%;animation-duration:8s;animation-delay:-3s}
+@keyframes glowP{0%,100%{opacity:.7;transform:scale(1)}50%{opacity:1;transform:scale(1.18)}}
+
+/* ─────────────────────────────────────────
+   MARQUEE STRIP
+───────────────────────────────────────── */
+.proof-strip{position:relative;z-index:1;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:linear-gradient(90deg,rgba(124,58,237,.05),rgba(236,72,153,.03),rgba(59,130,246,.05));overflow:hidden}
+.mq-track{display:flex;animation:mq 26s linear infinite;width:max-content;padding:14px 0}
+.mq-item{display:flex;align-items:center;gap:10px;padding:0 34px;white-space:nowrap}
+.mq-sep{width:5px;height:5px;border-radius:50%;background:rgba(124,58,237,.5);flex-shrink:0}
+.mq-txt{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:rgba(255,255,255,.55);letter-spacing:.03em}
+.mq-txt strong{color:#fff}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ─────────────────────────────────────────
+   PROBLEM
+───────────────────────────────────────── */
+.prob-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.prob-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--r-lg);padding:28px;position:relative;overflow:hidden;transition:border-color var(--tr),transform var(--tr)}
+.prob-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#7c3aed,#ec4899);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.prob-card:hover{border-color:rgba(124,58,237,.3);transform:translateY(-4px)}
+.prob-card:hover::before{transform:scaleX(1)}
+.prob-emoji{font-size:32px;margin-bottom:12px;display:block}
+.prob-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-bottom:8px}
+.prob-desc{font-size:14px;color:var(--muted);line-height:1.75}
+
+/* ─────────────────────────────────────────
+   SOLUTION
+───────────────────────────────────────── */
+.sol-wrap{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.sol-tag{display:inline-block;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);border-radius:100px;padding:5px 14px;margin-bottom:16px;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#22c55e}
+.sol-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(26px,3vw,40px);line-height:1.12;letter-spacing:-.02em;margin-bottom:16px}
+.sol-body{font-size:15px;color:var(--muted);line-height:1.82;margin-bottom:24px}
+.sol-list{list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:28px}
+.sol-list li{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:rgba(228,230,240,.72)}
+.sol-chk{width:22px;height:22px;border-radius:50%;flex-shrink:0;margin-top:1px;background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.3);display:flex;align-items:center;justify-content:center;font-size:10px;color:#a78bfa;font-weight:700}
+.sol-card{background:linear-gradient(145deg,rgba(124,58,237,.1),rgba(236,72,153,.05));border:1px solid rgba(124,58,237,.18);border-radius:var(--r-xl);padding:30px;position:relative;overflow:hidden}
+.sol-card::before{content:'';position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.18),transparent);top:-80px;right:-80px;pointer-events:none}
+.sol-metric-num{font-family:'Bebas Neue',sans-serif;font-size:62px;line-height:1;margin-bottom:4px;position:relative;z-index:1}
+.sol-metric-lbl{font-size:13px;color:var(--muted);margin-bottom:24px;position:relative;z-index:1}
+.sol-bars{display:flex;flex-direction:column;gap:10px;position:relative;z-index:1}
+.sol-bar-row{display:flex;align-items:center;gap:11px}
+.sol-bar-nm{font-size:12px;color:var(--muted);width:82px;flex-shrink:0}
+.sol-bar-track{flex:1;height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden}
+.sol-bar-fill{height:100%;border-radius:3px;animation:tlPulse 2.5s ease-in-out infinite}
+.sol-bar-val{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+
+/* ─────────────────────────────────────────
+   SERVICES
+───────────────────────────────────────── */
+.svc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.svc-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:32px;position:relative;overflow:hidden;transition:all var(--tr)}
+.svc-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(124,58,237,.07),rgba(236,72,153,.03));opacity:0;transition:opacity var(--tr);border-radius:inherit;pointer-events:none}
+.svc-card:hover{border-color:rgba(124,58,237,.32);transform:translateY(-5px);box-shadow:0 18px 50px rgba(0,0,0,.35)}
+.svc-card:hover::after{opacity:1}
+.svc-ico{width:52px;height:52px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:16px;position:relative;z-index:1}
+.si1{background:rgba(124,58,237,.18);border:1px solid rgba(124,58,237,.28)}
+.si2{background:rgba(59,130,246,.16);border:1px solid rgba(59,130,246,.28)}
+.si3{background:rgba(249,115,22,.16);border:1px solid rgba(249,115,22,.28)}
+.si4{background:rgba(236,72,153,.16);border:1px solid rgba(236,72,153,.28)}
+.svc-name{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-bottom:8px;position:relative;z-index:1}
+.svc-desc{font-size:14px;color:var(--muted);line-height:1.75;margin-bottom:16px;position:relative;z-index:1}
+.svc-outcomes{list-style:none;display:flex;flex-direction:column;gap:7px;position:relative;z-index:1}
+.svc-outcomes li{display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(228,230,240,.6)}
+.svc-outcomes li::before{content:'→';color:#7c3aed;font-weight:700;flex-shrink:0}
+.svc-badge{display:inline-block;margin-top:16px;padding:3px 10px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;position:relative;z-index:1}
+.sb-v{background:rgba(124,58,237,.12);color:#a78bfa;border:1px solid rgba(124,58,237,.2)}
+.sb-b{background:rgba(59,130,246,.12);color:#60a5fa;border:1px solid rgba(59,130,246,.2)}
+.sb-o{background:rgba(249,115,22,.12);color:#fb923c;border:1px solid rgba(249,115,22,.2)}
+.sb-p{background:rgba(236,72,153,.12);color:#f472b6;border:1px solid rgba(236,72,153,.2)}
+
+/* ─────────────────────────────────────────
+   PORTFOLIO
+───────────────────────────────────────── */
+.port-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;justify-content:center}
+.pf-tab{padding:7px 18px;border-radius:100px;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border:1.5px solid rgba(255,255,255,.1);color:rgba(255,255,255,.4);background:transparent;transition:all var(--tr)}
+.pf-tab:hover,.pf-tab.active{color:#fff;border-color:transparent;background:linear-gradient(135deg,#7c3aed,#ec4899);box-shadow:0 4px 16px rgba(124,58,237,.4)}
+.pf-tab[data-f="reels"].active{background:linear-gradient(135deg,#7c3aed,#a78bfa)}
+.pf-tab[data-f="shorts"].active{background:linear-gradient(135deg,#ec4899,#fb923c)}
+.pf-tab[data-f="longform"].active{background:linear-gradient(135deg,#3b82f6,#06b6d4)}
+.pf-tab[data-f="documentary"].active{background:linear-gradient(135deg,#d97706,#f59e0b)}
+.pf-tab[data-f="thumbnail"].active{background:linear-gradient(135deg,#22c55e,#06b6d4)}
+.port-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
+.port-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;transition:transform var(--tr),border-color var(--tr)}
+.port-card:hover{transform:translateY(-5px);border-color:rgba(124,58,237,.35)}
+.port-thumb{position:relative;aspect-ratio:16/9;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#050810}
+.port-bg{position:absolute;inset:0;transition:transform .4s}
+.port-card:hover .port-bg{transform:scale(1.06)}
+.port-ov{position:absolute;inset:0;background:rgba(0,0,0,.3);opacity:0;transition:opacity .3s;display:flex;align-items:center;justify-content:center}
+.port-card:hover .port-ov{opacity:1}
+.port-play{width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.18);backdrop-filter:blur(8px);border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center}
+.port-play-tri{width:0;height:0;border-style:solid;border-width:8px 0 8px 15px;border-color:transparent transparent transparent #fff;margin-left:3px}
+.port-pill{position:absolute;top:10px;left:10px;border-radius:100px;padding:3px 10px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#fff;backdrop-filter:blur(8px);z-index:2}
+.pp-reel{background:rgba(124,58,237,.85)}
+.pp-short{background:rgba(236,72,153,.85)}
+.pp-long{background:rgba(59,130,246,.82)}
+.pp-doc{background:rgba(213,138,0,.9)}
+.pp-thumb{background:rgba(34,197,94,.82)}
+.port-info{padding:13px 15px}
+.port-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:3px}
+.port-meta{font-size:12px;color:var(--muted)}
+.port-result{display:inline-flex;align-items:center;gap:5px;margin-top:8px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);border-radius:100px;padding:2px 9px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:#22c55e}
+
+/* ─────────────────────────────────────────
+   PRICING / OFFER SECTION  ← UPDATED
+───────────────────────────────────────── */
+.pricing-sec{background:linear-gradient(135deg,rgba(124,58,237,.08),rgba(236,72,153,.05),rgba(59,130,246,.06));border-top:1px solid rgba(124,58,237,.14);border-bottom:1px solid rgba(124,58,237,.14);position:relative;overflow:hidden}
+.pricing-sec::before{content:'';position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.1),transparent);top:-200px;left:50%;transform:translateX(-50%);pointer-events:none}
+.excl-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:100px;padding:6px 18px;margin-bottom:18px;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#f59e0b}
+
+/* Trial card */
+.trial-card{max-width:580px;margin:0 auto 44px;background:rgba(8,10,18,.8);border:2px solid rgba(124,58,237,.35);border-radius:var(--r-xl);padding:34px 36px;backdrop-filter:blur(16px);position:relative;z-index:1;overflow:hidden}
+.trial-card::before{content:'';position:absolute;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.2),transparent);top:-60px;right:-60px;pointer-events:none}
+.trial-price-row{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}
+.trial-price{font-family:'Bebas Neue',sans-serif;font-size:56px;line-height:1}
+.trial-price-sub{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:rgba(255,255,255,.4);letter-spacing:.08em;text-transform:uppercase}
+.trial-refund{display:inline-flex;align-items:center;gap:6px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);border-radius:100px;padding:4px 12px;margin-bottom:18px;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:#22c55e}
+.trial-includes{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:20px}
+.trial-includes li{display:flex;align-items:flex-start;gap:9px;font-size:14px;color:rgba(228,230,240,.75)}
+.ti-chk{width:20px;height:20px;border-radius:50%;flex-shrink:0;margin-top:1px;background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.3);display:flex;align-items:center;justify-content:center;font-size:9px;color:#a78bfa;font-weight:700}
+.trial-note{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:var(--r);padding:10px 14px;font-size:12px;color:rgba(245,158,11,.85);line-height:1.65;margin-bottom:20px}
+.trial-note strong{color:#f59e0b}
+
+/* Package cards */
+.pkg-label{text-align:center;margin-bottom:24px;position:relative;z-index:1}
+.pkg-label h3{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted2)}
+.pkg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:36px;position:relative;z-index:1}
+.pkg-card{background:rgba(8,10,18,.75);border:1px solid rgba(255,255,255,.08);border-radius:var(--r-lg);padding:26px 22px;backdrop-filter:blur(12px);transition:all var(--tr);position:relative;overflow:hidden}
+.pkg-card:hover{transform:translateY(-5px)}
+.pkg-card.pk-featured{border-color:rgba(236,72,153,.35);background:linear-gradient(145deg,rgba(124,58,237,.12),rgba(8,10,18,.85))}
+.pkg-card.pk-featured::before{content:'';position:absolute;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.22),transparent);top:-50px;right:-50px;pointer-events:none}
+.pkg-hot{position:absolute;top:14px;right:14px;background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.1em;padding:3px 9px;border-radius:100px;text-transform:uppercase}
+.pkg-tier{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:10px}
+.pt-green{color:#22c55e}.pt-yellow{color:#f59e0b}.pt-red{color:#f87171}
+.pkg-price{font-family:'Bebas Neue',sans-serif;font-size:44px;line-height:1;color:#fff;margin-bottom:3px}
+.pkg-price span{font-size:22px;vertical-align:super;opacity:.6}
+.pkg-price-sub{font-size:10px;color:var(--muted);margin-bottom:16px}
+.pkg-feats{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
+.pkg-feats li{display:flex;align-items:flex-start;gap:7px;font-size:12px;color:rgba(228,230,240,.6)}
+.pkg-feats li::before{content:'✓';color:#7c3aed;font-weight:700;flex-shrink:0}
+.pkg-note{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.15);border-radius:6px;padding:7px 10px;font-size:11px;color:rgba(245,158,11,.75);line-height:1.55;margin-bottom:16px}
+.pkg-btn{width:100%;padding:11px;border-radius:8px;border:none;cursor:pointer;font-family:'Syne',sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#fff;transition:all var(--tr);display:block;text-align:center}
+.pb-green{background:linear-gradient(135deg,#16a34a,#22c55e)}.pb-green:hover{box-shadow:0 5px 18px rgba(34,197,94,.4)}
+.pb-yellow{background:linear-gradient(135deg,#b45309,#f59e0b)}.pb-yellow:hover{box-shadow:0 5px 18px rgba(245,158,11,.4)}
+.pb-red{background:linear-gradient(135deg,#9f1239,#ec4899)}.pb-red:hover{box-shadow:0 5px 18px rgba(236,72,153,.4)}
+
+/* Add-ons */
+.addon-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:32px;position:relative;z-index:1}
+.addon-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:var(--r-lg);padding:20px;transition:all var(--tr)}
+.addon-card:hover{border-color:rgba(124,58,237,.3);transform:translateY(-3px)}
+.addon-icon{font-size:24px;margin-bottom:10px;display:block}
+.addon-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;margin-bottom:6px}
+.addon-price{font-family:'Bebas Neue',sans-serif;font-size:26px;color:#a78bfa;margin-bottom:6px}
+.addon-desc{font-size:13px;color:var(--muted);line-height:1.65}
+.addon-note{margin-top:8px;font-size:11px;color:rgba(245,158,11,.7);font-style:italic}
+
+/* Consult warning */
+.consult-banner{max-width:700px;margin:0 auto 32px;background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.25);border-radius:var(--r-lg);padding:18px 22px;display:flex;align-items:flex-start;gap:14px;position:relative;z-index:1}
+.cb-icon{font-size:24px;flex-shrink:0;margin-top:2px}
+.cb-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:#f59e0b;margin-bottom:4px}
+.cb-desc{font-size:13px;color:rgba(245,158,11,.8);line-height:1.6}
+
+.pricing-cta{text-align:center;position:relative;z-index:1}
+
+/* ─────────────────────────────────────────
+   PROCESS
+───────────────────────────────────────── */
+.proc-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0;position:relative}
+.proc-steps::before{content:'';position:absolute;top:43px;left:16.5%;right:16.5%;height:1px;background:linear-gradient(90deg,transparent,rgba(124,58,237,.3),rgba(236,72,153,.28),transparent)}
+.proc{text-align:center;padding:0 16px}
+.proc-ring{width:86px;height:86px;border-radius:50%;margin:0 auto 24px;background:linear-gradient(135deg,rgba(124,58,237,.18),rgba(236,72,153,.1));border:2px solid rgba(124,58,237,.28);display:flex;align-items:center;justify-content:center;position:relative;z-index:1;transition:all var(--tr)}
+.proc:hover .proc-ring{background:linear-gradient(135deg,rgba(124,58,237,.38),rgba(236,72,153,.22));border-color:rgba(124,58,237,.6);box-shadow:0 0 32px rgba(124,58,237,.3)}
+.proc-n{font-family:'Bebas Neue',sans-serif;font-size:32px;background:linear-gradient(135deg,#a78bfa,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.proc-ico{font-size:26px;display:block;margin-bottom:12px}
+.proc-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin-bottom:9px;letter-spacing:-.01em}
+.proc-desc{font-size:14px;color:var(--muted);line-height:1.75}
+
+/* ─────────────────────────────────────────
+   TESTIMONIALS
+───────────────────────────────────────── */
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.testi-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;transition:border-color var(--tr),transform var(--tr)}
+.testi-card:hover{border-color:rgba(124,58,237,.3);transform:translateY(-4px)}
+.testi-stars{color:#facc15;font-size:13px;letter-spacing:2px;margin-bottom:12px}
+.testi-quote{font-size:14px;color:rgba(228,230,240,.72);line-height:1.8;margin-bottom:16px;font-style:italic}
+.testi-res{background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.2);border-radius:var(--r);padding:10px 13px;margin-bottom:16px}
+.trb-lbl{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(167,139,250,.6);margin-bottom:4px}
+.trb-val{font-family:'Bebas Neue',sans-serif;font-size:21px;color:#a78bfa;line-height:1}
+.testi-auth{display:flex;align-items:center;gap:10px}
+.testi-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:#fff;flex-shrink:0}
+.ta1{background:linear-gradient(135deg,#7c3aed,#a78bfa)}
+.ta2{background:linear-gradient(135deg,#ec4899,#fb923c)}
+.ta3{background:linear-gradient(135deg,#3b82f6,#06b6d4)}
+.testi-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700}
+.testi-role{font-size:11px;color:var(--muted)}
+
+/* ─────────────────────────────────────────
+   FAQ
+───────────────────────────────────────── */
+.faq-wrap{max-width:740px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+.faq-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;transition:border-color var(--tr)}
+.faq-item.active{border-color:rgba(124,58,237,.32)}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:19px 22px;cursor:pointer;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;gap:14px;letter-spacing:-.01em}
+.faq-ico{width:28px;height:28px;border-radius:50%;flex-shrink:0;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.2);display:flex;align-items:center;justify-content:center;font-size:16px;color:#a78bfa;line-height:1;transition:transform .3s,background var(--tr)}
+.faq-item.active .faq-ico{transform:rotate(45deg);background:rgba(124,58,237,.22)}
+.faq-a{padding:0 22px;max-height:0;overflow:hidden;font-size:14px;color:var(--muted);line-height:1.82;transition:max-height .36s ease,padding .36s ease}
+.faq-item.active .faq-a{max-height:320px;padding:0 22px 20px}
+
+/* ─────────────────────────────────────────
+   FINAL CTA
+───────────────────────────────────────── */
+.final-sec{text-align:center;padding:110px 0;background:linear-gradient(135deg,rgba(124,58,237,.12),rgba(236,72,153,.07),rgba(59,130,246,.1));border-top:1px solid rgba(124,58,237,.18);position:relative;overflow:hidden}
+.final-sec::before{content:'';position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.14),transparent);top:-250px;left:50%;transform:translateX(-50%);pointer-events:none}
+.final-inner{position:relative;z-index:1}
+.final-urg{display:inline-block;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.28);border-radius:100px;padding:6px 18px;margin-bottom:20px;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#f59e0b}
+.final-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(42px,6vw,74px);line-height:.9;letter-spacing:.01em;margin-bottom:16px}
+.final-sub{font-size:17px;color:var(--muted);max-width:520px;margin:0 auto 32px;font-weight:300;line-height:1.8}
+.final-btns{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.final-note{font-size:13px;color:var(--muted2);line-height:1.7}
+
+/* ─────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────── */
+footer{background:#060810;border-top:1px solid rgba(255,255,255,.05);padding:48px 0 22px;position:relative;z-index:1}
+.ft-top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:36px;margin-bottom:40px}
+.ft-logo{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:.06em;background:linear-gradient(135deg,#a78bfa,#ec4899,#fb923c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+.ft-tag{font-size:13px;color:var(--muted);max-width:200px;line-height:1.6}
+.ft-col h4{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted2);margin-bottom:14px}
+.ft-col ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+.ft-col a{font-size:13px;color:var(--muted);transition:color var(--tr)}
+.ft-col a:hover{color:#fff}
+.ft-bottom{border-top:1px solid rgba(255,255,255,.05);padding-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.ft-copy{font-size:11px;color:var(--muted2)}
+.ft-dom{font-family:'Syne',sans-serif;font-weight:700;font-size:11px;background:linear-gradient(135deg,#a78bfa,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* ─────────────────────────────────────────
+   STICKY WHATSAPP
+───────────────────────────────────────── */
+.wa-btn{position:fixed;bottom:24px;right:24px;z-index:600;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#16a34a,#22c55e);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 22px rgba(34,197,94,.55);cursor:pointer;transition:all .3s;text-decoration:none;animation:waFloat 3s ease-in-out infinite}
+.wa-btn:hover{transform:scale(1.12);box-shadow:0 8px 34px rgba(34,197,94,.75);animation:none}
+.wa-btn svg{width:28px;height:28px}
+.wa-tip{position:absolute;right:64px;top:50%;transform:translateY(-50%);background:#111928;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:6px 12px;white-space:nowrap;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:#fff;opacity:0;transition:opacity .2s;pointer-events:none}
+.wa-btn:hover .wa-tip{opacity:1}
+@keyframes waFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+
+/* ─────────────────────────────────────────
+   REVEAL
+───────────────────────────────────────── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease}
+.reveal.visible{opacity:1;transform:none}
+.rd1{transition-delay:.07s}.rd2{transition-delay:.15s}.rd3{transition-delay:.23s}.rd4{transition-delay:.31s}
+
+/* ─────────────────────────────────────────
+   RESPONSIVE
+───────────────────────────────────────── */
+@media(max-width:960px){
+  .hero-grid,.sol-wrap{grid-template-columns:1fr}
+  .hero-right{height:320px}
+  .hr-scene{width:220px;height:220px}
+  .ring1{width:210px;height:210px;margin:-105px 0 0 -105px}
+  .ring2{width:170px;height:170px;margin:-85px 0 0 -85px}
+  .ring3{width:130px;height:130px;margin:-65px 0 0 -65px}
+  .svc-grid{grid-template-columns:1fr}
+  .port-grid{grid-template-columns:1fr 1fr}
+  .pkg-grid{grid-template-columns:1fr}
+  .addon-grid{grid-template-columns:1fr}
+  .proc-steps{grid-template-columns:1fr;gap:28px}
+  .proc-steps::before{display:none}
+  .testi-grid{grid-template-columns:1fr}
+  .prob-grid{grid-template-columns:1fr}
+  .sol-wrap{gap:32px}
+  .nav-links{display:none}
+  .hbg{display:flex}
+  .ft-top{flex-direction:column}
+}
+@media(max-width:600px){
+  .section{padding:60px 0}
+  .port-grid{grid-template-columns:1fr}
+  .hero-ctas{flex-direction:column;align-items:flex-start}
+  .hero-stats{gap:16px}
+  .final-btns{flex-direction:column;align-items:center}
+  .ft-bottom{flex-direction:column;text-align:center}
+  .hero-right{display:none}
+  .trial-card{padding:24px 18px}
+  .consult-banner{flex-direction:column;gap:8px}
+}
+</style>
+</head>
+<body>
+
+<!-- AMBIENT -->
+<div class="ambient">
+  <div class="ao ao1"></div>
+  <div class="ao ao2"></div>
+  <div class="ao ao3"></div>
+</div>
+<div id="particles"></div>
+
+<!-- STICKY WA -->
+<a class="wa-btn" href="https://wa.me/919880050848?text=Hey%20I%20want%20to%20request%20a%20trial%20reel%20edit" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  <span class="wa-tip">Request Trial Edit</span>
+</a>
+
+<!-- HEADER -->
+<header id="hdr">
+  <div class="hdr-wrap">
+    <a href="#" class="logo">PrimePixl Studio</a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#testimonials">Results</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <div style="display:flex;align-items:center;gap:10px">
+      <a href="https://wa.me/919880050848?text=Hey%20I%20want%20to%20request%20a%20trial%20reel%20edit" target="_blank" class="btn btn-violet" style="padding:9px 18px;font-size:11px">Trial Edit ₹199</a>
+      <div class="hbg" id="hbg" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</header>
+
+<!-- MOBILE MENU -->
+<nav class="mmenu" id="mmenu">
+  <a href="#services" onclick="toggleMenu()">Services</a>
+  <a href="#portfolio" onclick="toggleMenu()">Portfolio</a>
+  <a href="#pricing" onclick="toggleMenu()">Pricing</a>
+  <a href="#testimonials" onclick="toggleMenu()">Results</a>
+  <a href="#faq" onclick="toggleMenu()">FAQ</a>
+  <a href="https://wa.me/919880050848?text=Hey%20I%20want%20to%20request%20a%20trial%20reel%20edit" class="btn btn-wa" target="_blank" style="justify-content:center">💬 Trial Edit — ₹199</a>
+</nav>
+
+<!-- ══════════════════════════════════════
+     HERO
+══════════════════════════════════════ -->
+<section class="hero" id="home">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="reveal">
+        <div class="hero-badge"><div class="badge-dot"></div><span class="label-tag" style="color:#a78bfa;font-size:10px">Bangalore's Premium Reel Studio</span></div>
+        <h1 class="display hero-title">Turn Your Raw Clips Into<br><span class="grad">Viral Reels That Grow</span><br>Your Brand &amp; Sales.</h1>
+        <p class="hero-sub">We transform your footage into high-performing reels designed to boost engagement, followers, and conversions — engineered for the algorithm, delivered in 48 hours.</p>
+        <div class="hero-ctas">
+          <a href="https://wa.me/919880050848?text=Hey%20I%20want%20to%20request%20a%20trial%20reel%20edit" target="_blank" class="btn btn-violet btn-lg"><span>💬</span>Request a Trial Edit</a>
+          <a href="#portfolio" class="btn btn-ghost btn-lg">View Viral Edits ↓</a>
+        </div>
+        <div class="hero-stats">
+          <div><div class="hs-num grad">200+</div><div class="hs-lbl">Videos Edited</div></div>
+          <div><div class="hs-num grad">10M+</div><div class="hs-lbl">Views Generated</div></div>
+          <div><div class="hs-num grad">48hr</div><div class="hs-lbl">Delivery</div></div>
+          <div><div class="hs-num grad">50+</div><div class="hs-lbl">Happy Clients</div></div>
+        </div>
+      </div>
+      <!-- CSS-ONLY 3D VISUAL -->
+      <div class="hero-right reveal rd2">
+        <div class="vg vg1"></div>
+        <div class="vg vg2"></div>
+        <div class="hr-scene">
+          <div class="ring ring1"></div>
+          <div class="ring ring2"></div>
+          <div class="ring ring3"></div>
+          <div class="hr-play"><div class="hr-tri"></div></div>
+          <!-- floating gems -->
+          <div class="gem gem1"></div>
+          <div class="gem gem2"></div>
+          <div class="gem gem3"></div>
+          <div class="gem gem4"></div>
+        </div>
+        <!-- HUD cards -->
+        <div class="hud hud-tl">
+          <div class="hud-lbl">Timeline · Sequence 01</div>
+          <div style="position:relative">
+            <div class="tl-row"><div class="tl-fill tf1"></div></div>
+            <div class="tl-row"><div class="tl-fill tf2"></div></div>
+            <div class="tl-row"><div class="tl-fill tf3"></div></div>
+            <div class="tl-row"><div class="tl-fill tf4"></div></div>
+            <div class="tl-ph"></div>
+          </div>
+        </div>
+        <div class="hud hud-pf">
+          <div class="hud-lbl" style="margin-bottom:8px">Performance</div>
+          <div class="pf-row"><span class="pf-lbl">Views</span><div class="pf-track"><div class="pf-fill" style="width:88%;background:linear-gradient(90deg,#a78bfa,#7c3aed)"></div></div><span class="pf-val">88%</span></div>
+          <div class="pf-row"><span class="pf-lbl">Retain</span><div class="pf-track"><div class="pf-fill" style="width:74%;background:linear-gradient(90deg,#ec4899,#fb923c);animation-delay:.4s"></div></div><span class="pf-val">74%</span></div>
+          <div class="pf-row"><span class="pf-lbl">CTR</span><div class="pf-track"><div class="pf-fill" style="width:93%;background:linear-gradient(90deg,#3b82f6,#06b6d4);animation-delay:.8s"></div></div><span class="pf-val">93%</span></div>
+        </div>
+        <div class="hud hud-ex">
+          <div class="ex-row">
+            <div class="ex-ico">🎬</div>
+            <div><div class="ex-name">Reel_Final_v3.mp4</div><div class="ex-sub">4K · H.264 · 24fps</div></div>
+          </div>
+          <div class="ex-bar"><div class="ex-fill"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROOF STRIP -->
+<div class="proof-strip">
+  <div class="mq-track">
+    <div class="mq-item"><span class="mq-txt">Trusted by <strong>100+ Creators</strong></span><span class="mq-sep"></span></div>
+    <div class="mq-item"><span class="mq-txt"><strong>10M+ Views</strong> Generated</span><span class="mq-sep"></span></div>
+    <div class="mq-item"><span class="mq-txt"><strong>48hr Delivery</strong> Guaranteed</span><span class="mq-sep"></span></div>
+    <div class="mq-item"><span class="mq-txt"><strong>200+ Reels</strong> Edited</span><span class="mq-sep"></span></div>
+    <div class="mq-item"><span class="mq-txt">Avg <strong>3× Engagement Lift</strong></span><span class="mq-sep"></span></div>
+    <div class="mq-item"><span class="mq-txt"><strong>5-Star Rated</strong> Studio</span><span class="mq-sep"></span></div>
+    <div class="mq-item"><span class="mq-txt">Trial Edit <strong>from ₹199</strong></span><span class="mq-sep"></span></div>
+    <div class="mq-item"><span class="mq-txt">Based in <strong>Bangalore 🇮🇳</strong></span><span class="mq-sep"></span></div>
+    <div class="mq-item"><span class="mq-txt">Trusted by <strong>100+ Creators</strong></span><span class="mq-sep"></span></div>
+    <div class="mq-item"><span class="mq-txt"><strong>10M+ Views</strong> Generated</span><span class="mq-sep"></span></div>
+    <div class="mq-item"><span class="mq-txt"><strong>48hr Delivery</strong> Guaranteed</span><span class="mq-sep"></span></div>
+    <div class="mq-item"><span class="mq-txt"><strong>200+ Reels</strong> Edited</span><span class="mq-sep"></span></div>
+    <div class="mq-item"><span class="mq-txt">Avg <strong>3× Engagement Lift</strong></span><span class="mq-sep"></span></div>
+    <div class="mq-item"><span class="mq-txt"><strong>5-Star Rated</strong> Studio</span><span class="mq-sep"></span></div>
+    <div class="mq-item"><span class="mq-txt">Trial Edit <strong>from ₹199</strong></span><span class="mq-sep"></span></div>
+    <div class="mq-item"><span class="mq-txt">Based in <strong>Bangalore 🇮🇳</strong></span><span class="mq-sep"></span></div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section class="section section-alt" id="problem">
+  <div class="container">
+    <div class="sec-header reveal">
+      <div class="sec-badge"><div class="sec-badge-dot"></div><span class="label-tag" style="color:#a78bfa;font-size:10px">Sound Familiar?</span></div>
+      <h2 class="sec-title">Why Your Content Isn't<br><span class="grad">Breaking Through</span></h2>
+      <p class="sec-sub">It's not your niche. It's not your camera. It's how your content is being edited and presented to the algorithm.</p>
+    </div>
+    <div class="prob-grid">
+      <div class="prob-card reveal rd1"><span class="prob-emoji">😔</span><h3 class="prob-title">Low Views Despite Consistent Posting</h3><p class="prob-desc">You show up every day and still watch your reels die at 300–500 views. The problem isn't your frequency — it's that your hook doesn't hold attention in the first 2 seconds. The algorithm buries you immediately.</p></div>
+      <div class="prob-card reveal rd2"><span class="prob-emoji">⏰</span><h3 class="prob-title">No Time to Edit Consistently</h3><p class="prob-desc">Between creating content, running your business and living your life — editing is what always gets sacrificed. You either skip posting or rush an edit that doesn't do your content justice. Neither gets you growth.</p></div>
+      <div class="prob-card reveal rd3"><span class="prob-emoji">📉</span><h3 class="prob-title">Your Content Looks Average and Gets Ignored</h3><p class="prob-desc">Competitors have cinematic edits, synced audio and sharp captions. You're posting raw cuts that feel unpolished. In a feed full of premium content, average gets scrolled past — every single time.</p></div>
+      <div class="prob-card reveal rd4"><span class="prob-emoji">💸</span><h3 class="prob-title">Low Engagement Means Zero Brand Deals</h3><p class="prob-desc">Brands measure engagement rate, saves and shares — not just follower count. If your reels don't perform, you're invisible to potential partners regardless of how hard you work.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTION -->
+<section class="section" id="solution">
+  <div class="container">
+    <div class="sol-wrap">
+      <div class="reveal">
+        <div class="sol-tag">The PrimePixl Method</div>
+        <h2 class="sol-title">We Don't Just Edit.<br><span class="grad">We Engineer Reels</span><br>for Retention &amp; Growth.</h2>
+        <p class="sol-body">Every reel we produce is built around one question: "What will make this viewer watch to the end and then follow?" We apply platform psychology, retention-first pacing and algorithm-aware editing to every frame.</p>
+        <ul class="sol-list">
+          <li><div class="sol-chk">✓</div><span>2-second hook engineering — stops the scroll before they think</span></li>
+          <li><div class="sol-chk">✓</div><span>Retention-first pacing — strategic cuts that hold attention to the last frame</span></li>
+          <li><div class="sol-chk">✓</div><span>Platform-native formats — different rules for Reels vs Shorts vs TikTok</span></li>
+          <li><div class="sol-chk">✓</div><span>Trending audio sync — music the algorithm currently rewards</span></li>
+          <li><div class="sol-chk">✓</div><span>Captions &amp; colour grade included in every single edit</span></li>
+          <li><div class="sol-chk">✓</div><span>Delivered in 48 hours — so you never miss a trend window</span></li>
+        </ul>
+        <a href="https://wa.me/919880050848?text=Hey%20I%20want%20to%20request%20a%20trial%20reel%20edit" target="_blank" class="btn btn-violet">Start With a Trial Edit →</a>
+      </div>
+      <div class="reveal rd2">
+        <div class="sol-card">
+          <div class="sol-metric-num grad-cool">3.8M</div>
+          <div class="sol-metric-lbl">Views generated for a client in 30 days</div>
+          <div class="sol-bars">
+            <div class="sol-bar-row"><span class="sol-bar-nm">Engagement</span><div class="sol-bar-track"><div class="sol-bar-fill" style="width:87%;background:linear-gradient(90deg,#7c3aed,#a78bfa)"></div></div><span class="sol-bar-val">87%</span></div>
+            <div class="sol-bar-row"><span class="sol-bar-nm">Retention</span><div class="sol-bar-track"><div class="sol-bar-fill" style="width:74%;background:linear-gradient(90deg,#ec4899,#fb923c);animation-delay:.3s"></div></div><span class="sol-bar-val">74%</span></div>
+            <div class="sol-bar-row"><span class="sol-bar-nm">CTR</span><div class="sol-bar-track"><div class="sol-bar-fill" style="width:93%;background:linear-gradient(90deg,#3b82f6,#06b6d4);animation-delay:.6s"></div></div><span class="sol-bar-val">93%</span></div>
+            <div class="sol-bar-row"><span class="sol-bar-nm">Shares</span><div class="sol-bar-track"><div class="sol-bar-fill" style="width:66%;background:linear-gradient(90deg,#22c55e,#06b6d4);animation-delay:.9s"></div></div><span class="sol-bar-val">66%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section section-alt" id="services">
+  <div class="container">
+    <div class="sec-header reveal">
+      <div class="sec-badge"><div class="sec-badge-dot"></div><span class="label-tag" style="color:#a78bfa;font-size:10px">What We Do</span></div>
+      <h2 class="sec-title">Services Engineered<br><span class="grad">for One Thing: Results</span></h2>
+      <p class="sec-sub">We don't sell editing time. We sell growth. Every service is designed to move the needle on your metrics.</p>
+    </div>
+    <div class="svc-grid">
+      <div class="svc-card reveal rd1"><div class="svc-ico si1">🎬</div><h3 class="svc-name">Reel Editing for Growth</h3><p class="svc-desc">Stop posting content that gets ignored. We turn raw clips into high-retention Reels with hooks that stop the scroll, pacing that holds attention and endings that drive follows and saves.</p><ul class="svc-outcomes"><li>More followers from every post</li><li>Higher reach via algorithm push</li><li>Saves &amp; shares that compound</li></ul><span class="svc-badge sb-v">Instagram · Shorts · TikTok</span></div>
+      <div class="svc-card reveal rd2"><div class="svc-ico si2">♻️</div><h3 class="svc-name">Content Repurposing</h3><p class="svc-desc">You have hours of footage sitting unused. We turn one long-form video into 8–12 high-performing clips across platforms. More reach, more content — zero extra effort from you.</p><ul class="svc-outcomes"><li>10× output from a single recording</li><li>Consistent presence across all platforms</li><li>Every clip optimised for its format</li></ul><span class="svc-badge sb-b">YouTube · Podcast · LinkedIn</span></div>
+      <div class="svc-card reveal rd3"><div class="svc-ico si3">🏢</div><h3 class="svc-name">Business Content Editing</h3><p class="svc-desc">Your business needs content that converts enquiries into clients — not just pretty videos. We edit product demos, testimonials and brand content that drives DMs and sales.</p><ul class="svc-outcomes"><li>More enquiries from Instagram</li><li>Professional image that builds trust</li><li>Ad-ready content that converts</li></ul><span class="svc-badge sb-o">Business · Ads · Products</span></div>
+      <div class="svc-card reveal rd4"><div class="svc-ico si4">✨</div><h3 class="svc-name">Personal Brand Reels</h3><p class="svc-desc">Your personal brand is your most bankable asset. We build a consistent, premium visual identity for your reels — so every post feels like a brand that commands serious attention.</p><ul class="svc-outcomes"><li>Instantly recognisable visual style</li><li>Premium positioning that attracts deals</li><li>Authority content that grows your audience</li></ul><span class="svc-badge sb-p">Creators · Coaches · Influencers</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section class="section" id="portfolio">
+  <div class="container">
+    <div class="sec-header reveal">
+      <div class="sec-badge"><div class="sec-badge-dot"></div><span class="label-tag" style="color:#a78bfa;font-size:10px">Our Work</span></div>
+      <h2 class="sec-title">Real Edits. Real Work.<br><span class="grad">Every Frame Intentional.</span></h2>
+      <p class="sec-sub">From high-retention reels and YouTube videos to cinematic documentaries — this is what PrimePixl produces.</p>
+    </div>
+    <div class="port-filters reveal">
+      <button class="pf-tab active" data-f="all" onclick="filterPort('all',this)">All</button>
+      <button class="pf-tab" data-f="reels" onclick="filterPort('reels',this)">Reels</button>
+      <button class="pf-tab" data-f="shorts" onclick="filterPort('shorts',this)">YouTube Shorts</button>
+      <button class="pf-tab" data-f="longform" onclick="filterPort('longform',this)">Long-form</button>
+      <button class="pf-tab" data-f="documentary" onclick="filterPort('documentary',this)">Documentary</button>
+      <button class="pf-tab" data-f="thumbnail" onclick="filterPort('thumbnail',this)">Thumbnails</button>
+    </div>
+    <div class="port-grid" id="portGrid">
+      <div class="port-card reveal rd1" data-cat="reels">
+        <div class="port-thumb"><div class="port-bg" style="background:linear-gradient(135deg,#1a0030,#2d1b69,#0f172a);position:absolute;inset:0"></div><span class="port-pill pp-reel">Reel</span><div class="port-ov"><div class="port-play"><div class="port-play-tri"></div></div></div></div>
+        <div class="port-info"><div class="port-title">Fitness Creator — Reel Edit</div><div class="port-meta">High-retention Instagram Reel</div><div class="port-result">🚀 450K Views · +12K Follows</div></div>
+      </div>
+      <div class="port-card reveal rd2" data-cat="shorts">
+        <div class="port-thumb"><div class="port-bg" style="background:linear-gradient(135deg,#0c1445,#1e3a8a,#0d1117);position:absolute;inset:0"></div><span class="port-pill pp-short">Short</span><div class="port-ov"><div class="port-play"><div class="port-play-tri"></div></div></div></div>
+        <div class="port-info"><div class="port-title">YouTube Short — Tech Review</div><div class="port-meta">Trending audio sync · Captions</div><div class="port-result">📱 280K Views in 3 Days</div></div>
+      </div>
+      <!-- DOCUMENTARY — real YouTube video -->
+      <div class="port-card reveal rd3" data-cat="documentary" style="border-color:rgba(245,158,11,.3)">
+        <div style="position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#000">
+          <iframe src="https://www.youtube.com/embed/a7y1wgJdceA?rel=0&modestbranding=1" title="Documentary Edit — PrimePixl Studio" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" style="position:absolute;inset:0;width:100%;height:100%;border:none"></iframe>
+          <span class="port-pill pp-doc" style="z-index:3">Documentary</span>
+          <span style="position:absolute;top:10px;right:10px;z-index:3;background:rgba(213,138,0,.22);border:1px solid rgba(245,158,11,.5);border-radius:100px;padding:3px 10px;font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fbbf24">My Work ✦</span>
+        </div>
+        <div class="port-info"><div class="port-title">Documentary Edit</div><div class="port-meta">Cinematic cut · Colour grade · Narration sync</div><div class="port-result" style="background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.25);color:#fbbf24">🎥 PrimePixl Original</div></div>
+      </div>
+      <div class="port-card reveal rd1" data-cat="longform">
+        <div class="port-thumb"><div class="port-bg" style="background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);position:absolute;inset:0"></div><span class="port-pill pp-long">Long-form</span><div class="port-ov"><div class="port-play"><div class="port-play-tri"></div></div></div></div>
+        <div class="port-info"><div class="port-title">Business Coach — Full Edit</div><div class="port-meta">14 clips repurposed from 1 interview</div><div class="port-result">📈 2.3M Views · 4 Paying Clients</div></div>
+      </div>
+      <div class="port-card reveal rd2" data-cat="reels">
+        <div class="port-thumb"><div class="port-bg" style="background:linear-gradient(135deg,#2d0036,#4a0060,#1a0030);position:absolute;inset:0"></div><span class="port-pill pp-reel">Reel</span><div class="port-ov"><div class="port-play"><div class="port-play-tri"></div></div></div></div>
+        <div class="port-info"><div class="port-title">Fashion Brand — Collab Reel</div><div class="port-meta">Brand collaboration content</div><div class="port-result">✨ Brand Deal Secured</div></div>
+      </div>
+      <div class="port-card reveal rd3" data-cat="thumbnail">
+        <div class="port-thumb"><div class="port-bg" style="background:linear-gradient(135deg,#0d1117,#21262d,#161b22);position:absolute;inset:0"></div><span class="port-pill pp-thumb">Thumbnail</span><div class="port-ov"><div class="port-play"><div class="port-play-tri"></div></div></div></div>
+        <div class="port-info"><div class="port-title">Real Estate — Thumbnail Design</div><div class="port-meta">CTR-optimised · Photoshop</div><div class="port-result">🏠 5 Leads First Week</div></div>
+      </div>
+    </div>
+    <div style="text-align:center" class="reveal">
+      <a href="https://wa.me/919880050848?text=Hey%20I%20want%20to%20request%20a%20trial%20reel%20edit" target="_blank" class="btn btn-violet btn-lg">I Want Results Like This →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     PRICING — UPDATED FULL SECTION
+══════════════════════════════════════ -->
+<section class="section pricing-sec" id="pricing">
+  <div class="container">
+    <div class="sec-header reveal" style="position:relative;z-index:1">
+      <div class="excl-badge">🔒 Exclusive — Limited Slots Available</div>
+      <h2 class="sec-title">Transparent Pricing.<br><span class="grad">No Hidden Charges.</span></h2>
+      <p class="sec-sub">Start with a ₹199 trial to see our quality. Then pick the plan that fits your growth goals.</p>
+    </div>
+
+    <!-- TRIAL EDIT -->
+    <div class="trial-card reveal">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:16px">
+        <div>
+          <div style="font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#a78bfa;margin-bottom:8px">⚡ Trial Edit</div>
+          <div class="trial-price-row">
+            <div class="trial-price grad">₹199</div>
+            <div class="trial-price-sub">One Sample Reel</div>
+          </div>
+          <div class="trial-refund">✅ ₹199 adjusted / refunded if you take any package</div>
+        </div>
+        <a href="https://wa.me/919880050848?text=Hey%20I%20want%20to%20request%20a%20trial%20reel%20edit" target="_blank" class="btn btn-violet" style="align-self:center">💬 Request Trial Edit</a>
+      </div>
+      <ul class="trial-includes">
+        <li><div class="ti-chk">✓</div><span>Basic editing — cuts, transitions &amp; music sync</span></li>
+        <li><div class="ti-chk">✓</div><span>1 sample reel delivered in 48 hours</span></li>
+        <li><div class="ti-chk">✓</div><span>1 revision included</span></li>
+        <li><div class="ti-chk">✓</div><span>₹199 fully adjusted against any package you purchase</span></li>
+      </ul>
+      <div class="trial-note">
+        <strong>⚠️ Important Note:</strong> Highly complex edits — heavy effects, advanced animations, or very long raw footage — may require additional charges beyond the trial price. We'll discuss this before starting so there are zero surprises.
+      </div>
+      <p style="font-size:12px;color:var(--muted2)">⚠️ Please message us before ordering for complex or bulk projects — this keeps expectations clear and projects running smoothly.</p>
+    </div>
+
+    <!-- MONTHLY PACKAGES -->
+    <div class="pkg-label reveal">
+      <h3>📦 Monthly Packages</h3>
+    </div>
+    <div class="pkg-grid">
+      <!-- STARTER -->
+      <div class="pkg-card reveal rd1">
+        <div class="pkg-tier pt-green">🟢 Starter</div>
+        <div class="pkg-price"><span>₹</span>7,999</div>
+        <div class="pkg-price-sub">Per Month · 10 Reels</div>
+        <ul class="pkg-feats">
+          <li>Up to 30 sec each</li>
+          <li>Basic–Pro editing</li>
+          <li>Clean cuts + transitions</li>
+          <li>Music sync</li>
+          <li>48hr delivery</li>
+          <li>2 revisions per reel</li>
+        </ul>
+        <div class="pkg-note">⚠️ Complex edits (heavy effects, advanced animations, or long raw footage) may require additional charges.</div>
+        <a href="https://wa.me/919880050848?text=Hey%20I%20want%20the%20Starter%20package%20-%20%E2%82%B97999" target="_blank" class="pkg-btn pb-green">Get Started →</a>
+      </div>
+      <!-- CREATOR -->
+      <div class="pkg-card pk-featured reveal rd2">
+        <span class="pkg-hot">Most Popular</span>
+        <div class="pkg-tier pt-yellow">🟡 Creator</div>
+        <div class="pkg-price"><span>₹</span>14,999</div>
+        <div class="pkg-price-sub">Per Month · 20 Reels</div>
+        <ul class="pkg-feats">
+          <li>Up to 45 sec each</li>
+          <li>Pro editing + pacing</li>
+          <li>Subtitles included</li>
+          <li>Color grading</li>
+          <li>Priority delivery</li>
+          <li>2–3 revisions per reel</li>
+        </ul>
+        <div class="pkg-note">⚠️ Complex edits (heavy effects, advanced animations, or long raw footage) may require additional charges.</div>
+        <a href="https://wa.me/919880050848?text=Hey%20I%20want%20the%20Creator%20package%20-%20%E2%82%B914999" target="_blank" class="pkg-btn pb-yellow">Get Started →</a>
+      </div>
+      <!-- PRO -->
+      <div class="pkg-card reveal rd3">
+        <div class="pkg-tier pt-red">🔴 Pro</div>
+        <div class="pkg-price"><span>₹</span>24,999</div>
+        <div class="pkg-price-sub">Per Month · 30 Reels</div>
+        <ul class="pkg-feats">
+          <li>Up to 60 sec each</li>
+          <li>Viral-style editing</li>
+          <li>Styled subtitles</li>
+          <li>Advanced pacing + hook optimisation</li>
+          <li>Priority support</li>
+          <li>3 revisions per reel</li>
+        </ul>
+        <div class="pkg-note">⚠️ Complex edits (heavy effects, advanced animations, or long raw footage) may require additional charges.</div>
+        <a href="https://wa.me/919880050848?text=Hey%20I%20want%20the%20Pro%20package%20-%20%E2%82%B924999" target="_blank" class="pkg-btn pb-red">Get Started →</a>
+      </div>
+    </div>
+
+    <!-- ADD-ONS -->
+    <div class="pkg-label reveal">
+      <h3>🚀 Add-Ons</h3>
+    </div>
+    <div class="addon-grid reveal">
+      <div class="addon-card">
+        <span class="addon-icon">🎬</span>
+        <div class="addon-title">Motion Graphics Reel</div>
+        <div class="addon-price">₹2,999 / video</div>
+        <div class="addon-desc">Text animations, effects, overlays — premium motion work that makes your content stand apart.</div>
+        <div class="addon-note">⚠️ Highly complex edits may require additional charges.</div>
+      </div>
+      <div class="addon-card">
+        <span class="addon-icon">🖼️</span>
+        <div class="addon-title">Thumbnail Design</div>
+        <div class="addon-price" style="font-size:20px">₹250 · ₹500+ · Custom</div>
+        <div class="addon-desc">
+          <strong style="color:#fff">Basic →</strong> ₹250 &nbsp;|&nbsp; <strong style="color:#fff">Pro →</strong> ₹500+ &nbsp;|&nbsp; <strong style="color:#fff">Complex →</strong> Quoted after review<br>
+          <span style="font-size:12px;color:var(--muted);margin-top:6px;display:block">CTR-optimised designs that make people click before they read the title.</span>
+        </div>
+        <div class="addon-note">⚠️ Highly complex designs may require additional charges.</div>
+      </div>
+    </div>
+
+    <!-- CONSULT BANNER -->
+    <div class="consult-banner reveal">
+      <span class="cb-icon">⚠️</span>
+      <div>
+        <div class="cb-title">Please Message Before Ordering Complex Projects</div>
+        <div class="cb-desc">For bulk projects, heavy motion graphics, long-form documentary edits, or anything that feels non-standard — message us on WhatsApp first. This protects both sides from unrealistic expectations and ensures we deliver exactly what you need.</div>
+      </div>
+    </div>
+
+    <div class="pricing-cta reveal">
+      <a href="https://wa.me/919880050848?text=Hey%20I%20want%20to%20request%20a%20trial%20reel%20edit" target="_blank" class="btn btn-wa btn-lg">
+        <span>💬</span> Start With the ₹199 Trial →
+      </a>
+      <p style="margin-top:14px;font-size:12px;color:var(--muted2)">₹199 adjusted against any package · Limited weekly slots · Reply within 1 hour</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="section section-alt" id="process">
+  <div class="container">
+    <div class="sec-header reveal">
+      <div class="sec-badge"><div class="sec-badge-dot"></div><span class="label-tag" style="color:#a78bfa;font-size:10px">How It Works</span></div>
+      <h2 class="sec-title">Clip to <span class="grad">Viral Content</span><br>in 3 Simple Steps</h2>
+      <p class="sec-sub">We've made the process effortless. You film, we handle everything else.</p>
+    </div>
+    <div class="proc-steps">
+      <div class="proc reveal rd1"><div class="proc-ring"><div class="proc-n">01</div></div><span class="proc-ico">📲</span><h3 class="proc-title">Send Your Clip</h3><p class="proc-desc">WhatsApp us your raw footage and a 5-minute brief. Tell us the platform, the vibe, and any references. No lengthy forms, no calls required.</p></div>
+      <div class="proc reveal rd2"><div class="proc-ring"><div class="proc-n">02</div></div><span class="proc-ico">🎬</span><h3 class="proc-title">We Edit &amp; Optimise</h3><p class="proc-desc">Our team applies retention engineering, trending audio, hook writing, colour grade and captions. Every frame is intentional, every cut calculated.</p></div>
+      <div class="proc reveal rd3"><div class="proc-ring"><div class="proc-n">03</div></div><span class="proc-ico">🚀</span><h3 class="proc-title">You Grow Faster</h3><p class="proc-desc">Your polished reel arrives in 48 hours. You post. The algorithm responds. Your audience grows. Repeat every week and watch compounding kick in.</p></div>
+    </div>
+    <div style="text-align:center;margin-top:48px" class="reveal">
+      <a href="https://wa.me/919880050848?text=Hey%20I%20want%20to%20request%20a%20trial%20reel%20edit" target="_blank" class="btn btn-violet btn-lg">Start the Process — ₹199 Trial →</a>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section" id="testimonials">
+  <div class="container">
+    <div class="sec-header reveal">
+      <div class="sec-badge"><div class="sec-badge-dot"></div><span class="label-tag" style="color:#a78bfa;font-size:10px">Client Results</span></div>
+      <h2 class="sec-title">Real Creators.<br><span class="grad">Real Numbers.</span></h2>
+      <p class="sec-sub">Specific, documented results from creators who trusted PrimePixl with their content.</p>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card reveal rd1"><div class="testi-stars">★★★★★</div><p class="testi-quote">"I was stuck at 4,200 followers for 8 months. After PrimePixl edited just 4 reels, I gained over 14,000 new followers in 3 weeks. The hook they built for my first reel was unlike anything I'd ever seen. Brands are now approaching me."</p><div class="testi-res"><div class="trb-lbl">Result in 30 Days</div><div class="trb-val">+14,000 Followers</div></div><div class="testi-auth"><div class="testi-av ta1">AR</div><div><div class="testi-name">Aryan Reddy</div><div class="testi-role">Fitness Creator · Hyderabad</div></div></div></div>
+      <div class="testi-card reveal rd2"><div class="testi-stars">★★★★★</div><p class="testi-quote">"My reels went from 3,000 to 50,000+ views in just a few weeks after switching to PrimePixl. Better hooks, sharper cuts, and scroll-stopping captions. My DMs with enquiries have tripled."</p><div class="testi-res"><div class="trb-lbl">View Growth</div><div class="trb-val">3K → 50K+ Views</div></div><div class="testi-auth"><div class="testi-av ta2">PS</div><div><div class="testi-name">Priya Sharma</div><div class="testi-role">Home Bakery Owner · Bengaluru</div></div></div></div>
+      <div class="testi-card reveal rd3"><div class="testi-stars">★★★★★</div><p class="testi-quote">"I gave them one 2-hour podcast interview. They cut it into 14 short clips that generated 2.1 million views across YouTube Shorts and Instagram. That one piece brought me 4 paid coaching clients."</p><div class="testi-res"><div class="trb-lbl">From One Interview</div><div class="trb-val">2.1M Views Generated</div></div><div class="testi-auth"><div class="testi-av ta3">KM</div><div><div class="testi-name">Kiran Mehta</div><div class="testi-role">Business Coach · Mumbai</div></div></div></div>
+    </div>
+    <div style="text-align:center;margin-top:40px" class="reveal">
+      <a href="https://wa.me/919880050848?text=Hey%20I%20want%20to%20request%20a%20trial%20reel%20edit" target="_blank" class="btn btn-violet btn-lg">Join 50+ Creators Getting Results →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section section-alt" id="faq">
+  <div class="container">
+    <div class="sec-header reveal">
+      <div class="sec-badge"><div class="sec-badge-dot"></div><span class="label-tag" style="color:#a78bfa;font-size:10px">Questions Answered</span></div>
+      <h2 class="sec-title">Everything You're <span class="grad">Wondering About</span></h2>
+      <p class="sec-sub">Every real objection answered. Still unsure? WhatsApp us — we reply within 1 hour.</p>
+    </div>
+    <div class="faq-wrap reveal">
+      <div class="faq-item" onclick="faqT(this)"><div class="faq-q">Why is the trial edit ₹199 and not free?<div class="faq-ico">+</div></div><div class="faq-a">We charge ₹199 to ensure we work only with serious creators who are genuinely committed to growing. Free edits attract people who aren't ready to invest in their growth — and that wastes both our time. The ₹199 filters for real intent and is fully adjusted against your package price. You're not paying for a sample; you're reserving a slot with a serious studio.</div></div>
+      <div class="faq-item" onclick="faqT(this)"><div class="faq-q">Can there be extra charges beyond the listed prices?<div class="faq-ico">+</div></div><div class="faq-a">Yes — for highly complex edits involving heavy motion graphics, advanced animations, very long raw footage, or bulk projects. We always discuss this before starting so there are zero surprises. If your project might fall into this category, message us first and we'll give you a clear quote upfront.</div></div>
+      <div class="faq-item" onclick="faqT(this)"><div class="faq-q">How long does each edit take?<div class="faq-ico">+</div></div><div class="faq-a">Reels and short-form: 48 hours guaranteed. Long-form YouTube (up to 20 min): 5 business days. Urgent same-day edits — WhatsApp us and we'll see what we can do. If we ever miss the deadline, your next edit is free.</div></div>
+      <div class="faq-item" onclick="faqT(this)"><div class="faq-q">How many revisions do I get?<div class="faq-ico">+</div></div><div class="faq-a">Trial: 1 revision. Starter Package: 2 revisions. Creator Package: 2–3 revisions. Pro Package: 3 revisions. Most clients only need 1 round because we fill out a thorough brief upfront — we'd rather get it right first time.</div></div>
+      <div class="faq-item" onclick="faqT(this)"><div class="faq-q">What format do I send my footage in?<div class="faq-ico">+</div></div><div class="faq-a">Any format — MP4, MOV, AVI, or raw phone recordings. Send via WhatsApp for short clips, or Google Drive/Dropbox/WeTransfer for larger files. Just shoot naturally and send as-is. We handle everything from there.</div></div>
+      <div class="faq-item" onclick="faqT(this)"><div class="faq-q">Do you work with businesses or just creators?<div class="faq-ico">+</div></div><div class="faq-a">Both. We work with Instagram creators, influencers, YouTubers, coaches, consultants, small business owners, restaurants, fashion brands, real estate agents and more. If you have footage and a goal, we can engineer content that delivers it.</div></div>
+      <div class="faq-item" onclick="faqT(this)"><div class="faq-q">What makes PrimePixl different from other editors?<div class="faq-ico">+</div></div><div class="faq-a">Most editors hand you back a file. We hand you back content engineered for performance. We study the algorithm, apply retention psychology, include hook writing and caption optimisation — and back it with our 48-hour delivery guarantee. Our goal isn't to make your content look good. It's to make it grow your account and business.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-sec" id="contact">
+  <div class="container">
+    <div class="final-inner reveal">
+      <div class="final-urg">🔒 Only 5 Trial Slots Available This Week</div>
+      <h2 class="display final-title">Stop Posting<br><span class="grad">Average Content.</span><br>Start Growing.</h2>
+      <p class="final-sub">Your audience is out there. Your brand is ready. The only thing between you and the growth you deserve is content that actually performs. Start with a ₹199 trial that proves everything.</p>
+      <div class="final-btns">
+        <a href="https://wa.me/919880050848?text=Hey%20I%20want%20to%20request%20a%20trial%20reel%20edit" target="_blank" class="btn btn-wa btn-xl"><span>💬</span>Send Your Clip Now — ₹199</a>
+        <a href="mailto:hello@primepixlstudio.in" class="btn btn-ghost btn-xl">📧 Email Us Instead</a>
+      </div>
+      <p class="final-note">₹199 adjusted against any package · 48hr delivery · Response in under 1 hour<br>Bangalore, India 🇮🇳 · primepixlstudio.in</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="ft-top">
+      <div><div class="ft-logo">PrimePixl Studio</div><p class="ft-tag">Premium reel editing &amp; content creation that grows your brand and drives measurable results.</p></div>
+      <div class="ft-col"><h4>Services</h4><ul><li><a href="#services">Reel Editing</a></li><li><a href="#services">Content Repurposing</a></li><li><a href="#services">Business Content</a></li><li><a href="#services">Personal Brand</a></li></ul></div>
+      <div class="ft-col"><h4>Navigate</h4><ul><li><a href="#portfolio">Portfolio</a></li><li><a href="#pricing">Pricing</a></li><li><a href="#testimonials">Results</a></li><li><a href="#faq">FAQ</a></li></ul></div>
+      <div class="ft-col"><h4>Contact</h4><ul><li><a href="mailto:hello@primepixlstudio.in">📧 hello@primepixlstudio.in</a></li><li><a href="https://wa.me/919880050848" target="_blank">💬 +91 98800 50848</a></li><li><a href="https://instagram.com/primepixlstudio" target="_blank">📸 @primepixlstudio</a></li><li><a href="https://primepixlstudio.in" target="_blank">🌐 primepixlstudio.in</a></li></ul></div>
+    </div>
+    <div class="ft-bottom">
+      <span class="ft-copy">© 2025 PrimePixl Studio · All rights reserved · Bangalore, India</span>
+      <span class="ft-dom">primepixlstudio.in</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* PARTICLES */
+(function(){
+  const c=['#a78bfa','#ec4899','#fb923c','#38bdf8','#4ade80','#facc15'];
+  const p=document.getElementById('particles');
+  for(let i=0;i<36;i++){
+    const d=document.createElement('div');d.className='pt';
+    const s=1.5+Math.random()*3;
+    d.style.cssText=`left:${Math.random()*100}%;bottom:${Math.random()*15}%;width:${s}px;height:${s}px;background:${c[i%c.length]};animation-duration:${6+Math.random()*10}s;animation-delay:${Math.random()*10}s`;
+    p.appendChild(d);
+  }
+})();
+
+/* SCROLL REVEAL */
+const rEls=document.querySelectorAll('.reveal');
+const rObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});},{threshold:.1});
+rEls.forEach(r=>rObs.observe(r));
+
+/* HEADER SCROLL */
+window.addEventListener('scroll',()=>{document.getElementById('hdr').classList.toggle('scrolled',scrollY>50)});
+
+/* MOBILE MENU */
+function toggleMenu(){document.getElementById('mmenu').classList.toggle('open')}
+
+/* SMOOTH SCROLL */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}});
+});
+
+/* FAQ */
+function faqT(el){
+  const o=el.classList.contains('active');
+  document.querySelectorAll('.faq-item').forEach(f=>f.classList.remove('active'));
+  if(!o)el.classList.add('active');
+}
+
+/* PORTFOLIO FILTER */
+function filterPort(cat,btn){
+  document.querySelectorAll('.pf-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('#portGrid .port-card').forEach(c=>{
+    c.style.display=(cat==='all'||c.dataset.cat===cat)?'block':'none';
+  });
+}
+</script>
+</body>
+</html>
